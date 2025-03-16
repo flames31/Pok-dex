@@ -2,14 +2,26 @@ package pokeapi
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 )
 
 func (c *Client) ListLocations(pageURL *string) (RespShallowLocations, error) {
 	url := baseURL + "/location-area"
+	locationsResp := RespShallowLocations{}
+
 	if pageURL != nil {
 		url = *pageURL
+	}
+
+	if resp, ok := c.cache.Get(url); ok {
+		err := json.Unmarshal(resp, &locationsResp)
+		if err != nil {
+			return RespShallowLocations{}, err
+		}
+		fmt.Println("RETRIEVED FROM CACHE")
+		return locationsResp, nil
 	}
 
 	req, err := http.NewRequest("GET", url, nil)
@@ -29,7 +41,7 @@ func (c *Client) ListLocations(pageURL *string) (RespShallowLocations, error) {
 		return RespShallowLocations{}, err
 	}
 
-	locationsResp := RespShallowLocations{}
+	c.cache.Add(url, data)
 
 	err = json.Unmarshal(data, &locationsResp)
 	if err != nil {
