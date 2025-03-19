@@ -29,6 +29,10 @@ func (c *Client) ExploreLocation(locationName string) (RespExploreLocation, erro
 		return RespExploreLocation{}, err
 	}
 
+	if resp.StatusCode != http.StatusOK {
+		return RespExploreLocation{}, fmt.Errorf("Invalid location!")
+	}
+
 	defer resp.Body.Close()
 
 	data, err := io.ReadAll(resp.Body)
