@@ -5,7 +5,7 @@ import "fmt"
 func commandExplore(cfg *config, args ...string) error {
 
 	if len(args) < 1 {
-		return fmt.Errorf("Need a location you bum")
+		return fmt.Errorf("need a location you bum")
 	}
 	location := args[0]
 
