@@ -6,7 +6,7 @@ import (
 )
 
 func commandExit(cfg *config, args ...string) error {
-	fmt.Println("Closing Pokedex... bye bitch!")
+	fmt.Println("Closing Pokedex... bye broski!")
 	os.Exit(0)
 	return nil
 }
